@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Log;
 use App\Events\UserReferred;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-
+use App\wallet;
 class RewardUser
 {
     /**
@@ -34,12 +34,22 @@ class RewardUser
             if ($referral->program->name === 'Sign-up Bonus') {
                 // User who was sharing link
                 $provider = $referral->user;
-                $provider->addCredits(15);
+                //$provider->wallet
                 Log::info($provider);
+                Log::info($provider->id);
+                $wallet = wallet::find($provider->wallet->id);
+                $wallet->balance = $wallet->balance + 100;
+                $wallet->save();
                 // User who used the link
                 $user = $event->user;
                 $user->addCredits(20);
                 Log::info($user);
+                Log::info($user->id);
+                //$wallet = wallet::find($user->wallet->id);
+                $wallet = new wallet;
+                $wallet->user_id = $user->id;
+                $wallet->balance = 50;
+                $wallet->save();
             }
 
         }

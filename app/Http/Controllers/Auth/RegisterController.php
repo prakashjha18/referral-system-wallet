@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use App\wallet;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -70,7 +70,15 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
         event(new \App\Events\UserReferred(request()->cookie('ref'), $user));
-
+        if (wallet::where('user_id', '=', $user->id)->exists()) {
+            // user found
+        }
+        else{
+        $wallet = new wallet;
+        $wallet->user_id = $user->id;
+        $wallet->balance = 0;
+        $wallet->save();
+        }
         return $user;
     }
 }

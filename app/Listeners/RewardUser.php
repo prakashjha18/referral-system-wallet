@@ -38,7 +38,7 @@ class RewardUser
                 Log::info($provider);
                 Log::info($provider->id);
                 $wallet = wallet::find($provider->wallet->id);
-                $wallet->balance = $wallet->balance + 100;
+                $wallet->balance = $wallet->balance + 50;
                 $wallet->save();
                 // User who used the link
                 $user = $event->user;
@@ -48,7 +48,7 @@ class RewardUser
                 //$wallet = wallet::find($user->wallet->id);
                 $wallet = new wallet;
                 $wallet->user_id = $user->id;
-                $wallet->balance = 50;
+                $wallet->balance = 100;
                 $wallet->save();
             }
 
